@@ -1,0 +1,7 @@
+import joblib
+
+# Assuming 'model' is your trained XGBRegressor from your script
+# This command saves the model weights into the file predict.py looks for
+joblib.dump(model, "garbage_model.pkl")
+
+print("File 'garbage_model.pkl' has been generated successfully!")

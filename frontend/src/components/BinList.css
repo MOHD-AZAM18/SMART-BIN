@@ -1,0 +1,61 @@
+.bin-container {
+  padding: 30px;
+  background: #f1f5f9;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+/* GRID LAYOUT */
+.bin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+}
+
+/* BIN CARD */
+.bin-card {
+  background: white;
+  border-radius: 10px;
+  padding: 10px 5px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.bin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.bin-id {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.bin-fill {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* STATUS COLORS */
+.low {
+  border-top: 5px solid #22c55e;
+}
+
+.medium {
+  border-top: 5px solid #facc15;
+}
+
+.high {
+  border-top: 5px solid #ef4444;
+}

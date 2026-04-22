@@ -1,0 +1,186 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Send, Database, Info, Clock, Lock, CheckCircle } from "lucide-react";
+
+export default function ManualReport({ fetchBinsGlobal }) {
+  const [bins, setBins] = useState([]);
+  const [formData, setFormData] = useState({ binId: "", level: "" });
+  const [loading, setLoading] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Update clock every minute
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    axios.get("http://localhost:4000/api/bins").then((res) => setBins(res.data));
+    return () => clearInterval(timer);
+  }, []);
+
+  // Check if current time is between 6:00 AM and 12:00 PM
+  const isTimeValid = () => {
+    const hours = currentTime.getHours();
+    return hours >= 6 && hours < 12;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // --- TIME VALIDATION CHECK ---
+    if (!isTimeValid()) {
+      alert("Error: Reporting time is over! Reports are only allowed between 6:00 AM and 12:00 PM.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await axios.post("http://localhost:4000/api/complaints/register", {
+        binId: formData.binId,
+        reportedFillLevel: Number(formData.level),
+      });
+
+      if (fetchBinsGlobal) fetchBinsGlobal();
+      alert("Success: Report has been sent!");
+      setFormData({ binId: "", level: "" });
+    } catch (err) {
+      alert("Error: Could not save report. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container py-5 mt-5">
+      <div className="row justify-content-center">
+        <div className="col-lg-5">
+          <div className="report-card border-0 shadow-lg rounded-4 p-4 p-lg-5">
+            
+            {/* Header with Live Status */}
+            <div className="text-center mb-5">
+              <div className={`status-badge-top mb-3 ${isTimeValid() ? 'bg-success' : 'bg-danger'}`}>
+                {isTimeValid() ? <CheckCircle size={20} /> : <Lock size={20} />}
+                <span>{isTimeValid() ? "Window Open" : "Window Closed"}</span>
+              </div>
+              <h2 className="fw-bold text-dark mb-1">Update Bin Status</h2>
+              <div className="d-flex align-items-center justify-content-center gap-2 text-muted small mt-2">
+                <Clock size={14} />
+                <span>Current Time: <strong>{currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong></span>
+              </div>
+            </div>
+
+            {/* Time Warning Box */}
+            {!isTimeValid() && (
+              <div className="alert alert-danger border-0 rounded-3 mb-4 small d-flex align-items-center gap-2">
+                <Info size={16} />
+                Reporting is strictly limited to 06:00 AM — 12:00 PM.
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} style={{ opacity: isTimeValid() ? 1 : 0.6 }}>
+              {/* Bin Selection */}
+              <div className="mb-4">
+                <label className="simple-label">Select Bin</label>
+                <select
+                  className="simple-input"
+                  value={formData.binId}
+                  onChange={(e) => setFormData({ ...formData, binId: e.target.value })}
+                  required
+                  disabled={!isTimeValid()}
+                >
+                  <option value="">Choose a bin...</option>
+                  {bins.map((b) => (
+                    <option key={b.binId} value={b.binId}>
+                      {b.binId} — {b.position}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Level Input */}
+              <div className="mb-5">
+                <label className="simple-label mb-2">Fill Level (%)</label>
+                <input
+                  type="number"
+                  className="simple-input"
+                  placeholder="Enter 0-100"
+                  min="0"
+                  max="100"
+                  value={formData.level}
+                  onChange={(e) => setFormData({ ...formData, level: e.target.value })}
+                  required
+                  disabled={!isTimeValid()}
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                className={`submit-button w-100 rounded-pill ${(!isTimeValid() || loading) ? "disabled" : ""}`}
+                disabled={loading || !isTimeValid()}
+              >
+                {loading ? "Sending..." : isTimeValid() ? "Send Report" : "Time Restricted"}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        .report-card {
+          background: white;
+          border: 1px solid rgba(0,0,0,0.05) !important;
+        }
+
+        .status-badge-top {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          color: white;
+          padding: 8px 16px;
+          border-radius: 50px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          text-transform: uppercase;
+        }
+
+        .simple-label {
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #475569;
+          display: block;
+        }
+
+        .simple-input {
+          width: 100%;
+          padding: 12px 16px;
+          background: #f8fafc;
+          border: 2px solid #e2e8f0;
+          border-radius: 12px;
+          outline: none;
+        }
+
+        .simple-input:focus {
+          border-color: #3b82f6;
+          background: white;
+        }
+
+        .submit-button {
+          background: #1e293b;
+          color: white;
+          border: none;
+          padding: 16px;
+          font-weight: bold;
+          transition: 0.3s;
+        }
+
+        .submit-button:hover:not(.disabled) {
+          background: #0f172a;
+          transform: translateY(-2px);
+        }
+
+        .submit-button.disabled {
+          background: #cbd5e1;
+          cursor: not-allowed;
+          transform: none;
+        }
+      `}</style>
+    </div>
+  );
+}

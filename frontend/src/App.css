@@ -1,0 +1,93 @@
+/* ✅ LAYOUT WRAPPER */
+.app {
+  margin-top: var(--nav-height);
+  min-height: calc(100vh - var(--nav-height));
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ✅ ENHANCED NAVBAR (Glassmorphism) */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--nav-height);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+/* ✅ THE "SMART CITY" MAP SECTION */
+.full-width {
+  width: 100%;
+  height: 65vh;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  background: var(--bg-card);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+}
+
+.full-width:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+}
+
+/* ✅ UI CARDS / CONTROL PANELS */
+.bottom-section, .card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ✅ BUTTONS (Modern Gradient & Interaction) */
+button, .btn-primary {
+  padding: 10px 24px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ✅ RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .full-width {
+    height: 50vh;
+  }
+}
+

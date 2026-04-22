@@ -1,0 +1,33 @@
+/* Sidebar Layout for Dashboard */
+.layout {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.side {
+  width: 350px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Typography Enhancements */
+/* Typography Enhancements - FIXED */
+.text-gradient {
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  background-clip: text; /* Standard property */
+  -webkit-background-clip: text; /* Safari/Chrome prefix */
+  -webkit-text-fill-color: transparent; /* Makes the text see-through to show gradient */
+  color: transparent; /* Fallback for other browsers */
+  display: inline-block; /* Ensures the background wraps the text tightly */
+  font-weight: 800;
+}
+
+/* Grid helper for Dashboard widgets */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
