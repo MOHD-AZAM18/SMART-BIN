@@ -3,12 +3,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
-const config = require('./config');
+const config = require('./config/config');
 const { PythonShell } = require('python-shell');
 
 // Routes
 const binsRouter = require('./routes/bins');
 const routeRouter = require('./routes/route');
+const authRouter = require("./routes/auth");
 const complaintRouter = require('./routes/complaints');
 const predictiveRouter = require('./routes/predictiveRoute'); // <--- UPDATED: Import new route
 
@@ -34,6 +35,7 @@ mongoose.connect(process.env.MONGO_URI)
 // API Routes
 app.use('/api/bins', binsRouter);
 app.use('/api/route', routeRouter);
+app.use("/api/auth", authRouter);
 app.use('/api/complaints', complaintRouter);
 app.use('/api/intelligence', predictiveRouter); // <--- UPDATED: Mount the fresh Intelligence Hub route
 

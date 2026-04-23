@@ -11,3 +11,17 @@ module.exports = {
   // Add your MongoDB URI here to keep server.js clean
   MONGODB_URI: process.env.MONGODB_URI || 'mongodb+srv://mohdazamansari52_db_user:5w0c6vK2EIEJpXrs@cluster0.cjahvvr.mongodb.net/?appName=cluster0'
 };
+
+// const mongoose = require("mongoose");
+
+// const connectDB = async () => {
+//   try {
+//     await mongoose.connect(process.env.MONGO_URI);
+//     console.log("✅ MongoDB Connected");
+//   } catch (error) {
+//     console.error("❌ MongoDB connection failed:", error.message);
+//     process.exit(1);
+//   }
+// };
+
+// module.exports = connectDB;
